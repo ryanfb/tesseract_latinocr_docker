@@ -35,4 +35,7 @@ RUN cd ancientgreekocr-grctraining; make corpus
 RUN cd ancientgreekocr-grctraining; make
 RUN git clone https://github.com/ryanfb/ancientgreekocr-grc.git
 RUN cp -v ancientgreekocr-grctraining/training_text.txt ancientgreekocr-grctraining/grc.word.txt ancientgreekocr-grctraining/grc.freq.txt ancientgreekocr-grctraining/grc.unicharambigs ancientgreekocr-grc
+RUN wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.eng.tar.gz
+RUN tar xzvf tesseract-ocr-3.02.eng.tar.gz
+RUN cp tesseract-ocr/tessdata/eng.traineddata /usr/local/share/tessdata/
 RUN cd ancientgreekocr-grc; make
