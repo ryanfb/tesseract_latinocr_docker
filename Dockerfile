@@ -29,14 +29,14 @@ RUN wget http://tlgu.carmen.gr/tlgu-1.6.zip
 RUN mkdir tlgu-1.6; unzip -d tlgu-1.6 tlgu-1.6.zip
 RUN cd tlgu-1.6; gcc tlgu.c -o /usr/local/bin/tlgu
 
-# Download and build grc.traineddata
-RUN git clone https://github.com/ryanfb/ancientgreekocr-grctraining.git
-RUN cd ancientgreekocr-grctraining; make corpus
-RUN cd ancientgreekocr-grctraining; make
-RUN git clone https://github.com/ryanfb/ancientgreekocr-grc.git
-RUN cd ancientgreekocr-grc; git fetch origin; git branch --track backup_site origin/backup_site; git checkout backup_site
-RUN cp -v ancientgreekocr-grctraining/training_text.txt ancientgreekocr-grctraining/grc.word.txt ancientgreekocr-grctraining/grc.freq.txt ancientgreekocr-grctraining/grc.unicharambigs ancientgreekocr-grc
+# Download and build lat.traineddata
+RUN git clone https://github.com/ryanfb/latinocr-lattraining.git
+RUN cd latinocr-lattraining; make corpus
+RUN cd latinocr-lattraining; make
+RUN git clone https://github.com/ryanfb/latinocr-lat.git
+RUN cd latinocr-lat; git fetch origin; git branch --track backup_site origin/backup_site; git checkout backup_site
+RUN cp -v latinocr-lattraining/training_text.txt latinocr-lattraining/lat.word.txt latinocr-lattraining/lat.freq.txt latinocr-lattraining/lat.unicharambigs latinocr-lat
 RUN wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.eng.tar.gz
 RUN tar xzvf tesseract-ocr-3.02.eng.tar.gz
 RUN cp tesseract-ocr/tessdata/eng.traineddata /usr/local/share/tessdata/
-RUN cd ancientgreekocr-grc; make
+RUN cd latinocr-lat; make
