@@ -39,4 +39,5 @@ RUN cp -v latinocr-lattraining/training_text.txt latinocr-lattraining/lat.word.t
 RUN wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.eng.tar.gz
 RUN tar xzvf tesseract-ocr-3.02.eng.tar.gz
 RUN cp tesseract-ocr/tessdata/eng.traineddata /usr/local/share/tessdata/
-RUN cd latinocr-lat; make
+RUN cd latinocr-lat; make features lat.normproto lat.unicharambigs
+RUN cd latinocr-lat; make lat.traineddata
