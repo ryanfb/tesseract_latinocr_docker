@@ -1,5 +1,5 @@
-tesseract_ancientgreekocr_docker
-================================
+tesseract_latinocr_docker
+=========================
 
 A Dockerfile for building and installing Tesseract 3.03 and the training tools onto an Ubuntu image, then building `lat.traineddata` from scratch.
 
