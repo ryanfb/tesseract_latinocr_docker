@@ -27,6 +27,7 @@ RUN cd tesseract-3.03; make training; make training-install
 # Download English language data, needed to run tesseract
 RUN wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.eng.tar.gz
 RUN tar xzvf tesseract-ocr-3.02.eng.tar.gz
+RUN cp tesseract-ocr/tessdata/eng.traineddata /usr/local/share/tessdata/
 
 # Download and build tlgu
 RUN wget http://tlgu.carmen.gr/tlgu-1.6.zip
@@ -40,6 +41,5 @@ RUN cd latinocr-lattraining; make
 COPY latinocr-lat latinocr-lat/
 RUN cp -v latinocr-lattraining/training_text.txt latinocr-lattraining/lat.word.txt latinocr-lattraining/lat.freq.txt latinocr-lattraining/lat.unicharambigs latinocr-lat
 
-RUN cp tesseract-ocr/tessdata/eng.traineddata /usr/local/share/tessdata/
 RUN cd latinocr-lat; make features lat.normproto lat.unicharambigs
 CMD cd latinocr-lat; make lat.traineddata
