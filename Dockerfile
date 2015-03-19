@@ -24,20 +24,22 @@ RUN cd tesseract-3.03; ./autogen.sh; ./configure; make; make install; ldconfig; 
 RUN cd tesseract-3.03/training; make clean
 RUN cd tesseract-3.03; make training; make training-install
 
+# Download English language data, needed to run tesseract
+RUN wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.eng.tar.gz
+RUN tar xzvf tesseract-ocr-3.02.eng.tar.gz
+
 # Download and build tlgu
 RUN wget http://tlgu.carmen.gr/tlgu-1.6.zip
 RUN mkdir tlgu-1.6; unzip -d tlgu-1.6 tlgu-1.6.zip
 RUN cd tlgu-1.6; gcc tlgu.c -o /usr/local/bin/tlgu
 
 # Download and build lat.traineddata
-RUN git clone https://github.com/ryanfb/latinocr-lattraining.git
+COPY latinocr-lattraining latinocr-lattraining/
 RUN cd latinocr-lattraining; make corpus
 RUN cd latinocr-lattraining; make
-RUN git clone https://github.com/ryanfb/latinocr-lat.git
-RUN cd latinocr-lat; git fetch origin; git branch --track backup_site origin/backup_site; git checkout backup_site
+COPY latinocr-lat latinocr-lat/
 RUN cp -v latinocr-lattraining/training_text.txt latinocr-lattraining/lat.word.txt latinocr-lattraining/lat.freq.txt latinocr-lattraining/lat.unicharambigs latinocr-lat
-RUN wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.eng.tar.gz
-RUN tar xzvf tesseract-ocr-3.02.eng.tar.gz
+
 RUN cp tesseract-ocr/tessdata/eng.traineddata /usr/local/share/tessdata/
 RUN cd latinocr-lat; make features lat.normproto lat.unicharambigs
-RUN cd latinocr-lat; make lat.traineddata
+CMD cd latinocr-lat; make lat.traineddata
