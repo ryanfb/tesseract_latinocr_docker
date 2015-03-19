@@ -13,16 +13,25 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
+# Set OpenMP compile flags.
+ENV CFLAGS -fopenmp
+ENV CPPFLAGS -fopenmp
+ENV CXXFLAGS -fopenmp
+ENV LDFLAGS -fopenmp
+
 # More environment variables.
 ENV LD_LIBRARY_PATH /usr/local/lib
 WORKDIR /home
 
-# Download and compile tesseract 3.03-rc1
+# Download tesseract 3.03-rc1
 RUN wget -O tesseract-3.03-rc1.tar.gz "https://drive.google.com/uc?id=0B7l10Bj_LprhSGN2bTYwemVRREU&export=download"
 RUN tar xzf tesseract-3.03-rc1.tar.gz
-RUN cd tesseract-3.03; ./autogen.sh; ./configure; make; make install; ldconfig; make install-langs;
+# Download and apply OpenMP patch
+RUN cd tesseract-3.03; wget -O - https://gist.githubusercontent.com/ryanfb/217acaf8d14c2dcab412/raw/c6354c1aa408f7bdc2e54b17d52b8bc59bbb6e59/trainingsampleset.patch | patch -p0
+# Compile tessearct
+RUN cd tesseract-3.03; ./autogen.sh; ./configure; make -j8; make install; ldconfig; make install-langs;
 RUN cd tesseract-3.03/training; make clean
-RUN cd tesseract-3.03; make training; make training-install
+RUN cd tesseract-3.03; make -j8 training; make training-install
 
 # Download English language data, needed to run tesseract
 RUN wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.eng.tar.gz
