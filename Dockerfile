@@ -3,9 +3,13 @@ MAINTAINER Ryan Baumann <ryan.baumann@gmail.com>
 
 # Install the Ubuntu packages.
 RUN apt-get update
-RUN apt-get install -y autoconf automake libtool libpng12-dev libjpeg-dev libtiff5-dev zlib1g-dev libicu-dev libpango1.0-dev libcairo2-dev libleptonica-dev
+RUN apt-get install -y autoconf automake libtool libpng12-dev libjpeg-dev libtiff5-dev zlib1g-dev libicu-dev libpango1.0-dev libcairo2-dev libleptonica-dev build-essential
 RUN apt-get build-dep -y tesseract-ocr
 RUN apt-get install -y git wget vim unzip
+
+# Install csvkit.
+RUN apt-get install -y python-dev python-pip python-setuptools
+RUN pip install csvkit
 
 # Set the locale.
 RUN locale-gen en_US.UTF-8
@@ -28,11 +32,6 @@ RUN cd tesseract-3.03; make training; make training-install
 RUN wget https://tesseract-ocr.googlecode.com/files/tesseract-ocr-3.02.eng.tar.gz
 RUN tar xzvf tesseract-ocr-3.02.eng.tar.gz
 RUN cp tesseract-ocr/tessdata/eng.traineddata /usr/local/share/tessdata/
-
-# Download and build tlgu
-RUN wget http://tlgu.carmen.gr/tlgu-1.6.zip
-RUN mkdir tlgu-1.6; unzip -d tlgu-1.6 tlgu-1.6.zip
-RUN cd tlgu-1.6; gcc tlgu.c -o /usr/local/bin/tlgu
 
 # Download and build lat.traineddata
 COPY latinocr-lattraining latinocr-lattraining/
