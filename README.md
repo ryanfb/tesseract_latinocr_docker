@@ -1,7 +1,7 @@
 tesseract_latinocr_docker
 =========================
 
-A Dockerfile for building and installing Tesseract 3.03 and the training tools onto an Ubuntu image, then building `lat.traineddata` from scratch.
+A Dockerfile for building and installing Tesseract 3.03 and the training tools onto an Ubuntu image, then building [`lat.traineddata`](http://ryanfb.github.io/latinocr/) from scratch.
 
 * Run `git submodule update --init --recursive` to clone the submodules
 * Test the build with `docker build .`
