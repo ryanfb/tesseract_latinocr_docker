@@ -2,13 +2,31 @@ FROM ubuntu
 MAINTAINER Ryan Baumann <ryan.baumann@gmail.com>
 
 # Install the Ubuntu packages.
-RUN apt-get update
-RUN apt-get install -y autoconf automake libtool libpng12-dev libjpeg-dev libtiff5-dev zlib1g-dev libicu-dev libpango1.0-dev libcairo2-dev libleptonica-dev build-essential
-RUN apt-get build-dep -y tesseract-ocr
-RUN apt-get install -y git wget vim unzip
+RUN apt-get update && \
+    apt-get install -y \
+      autoconf \
+      automake \
+      build-essential \
+      curl \
+      git \
+      libcairo2-dev \
+      libicu-dev \
+      libjpeg-dev \
+      libleptonica-dev \
+      libpango1.0-dev \
+      libpng12-dev \
+      libtiff5-dev \
+      libtool \
+      python-dev \
+      python-pip \
+      python-setuptools \
+      unzip \
+      vim \
+      wget \
+      zlib1g-dev && \
+    apt-get build-dep -y tesseract-ocr
 
 # Install csvkit.
-RUN apt-get install -y python-dev python-pip python-setuptools
 RUN pip install csvkit
 
 # Set the locale.
