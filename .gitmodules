@@ -4,3 +4,4 @@
 [submodule "latinocr-lat"]
 	path = latinocr-lat
 	url = https://github.com/ryanfb/latinocr-lat.git
+	branch = langdata
