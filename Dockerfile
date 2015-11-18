@@ -59,49 +59,5 @@ RUN wget -O tesseract-3.04.00/training/tesstrain_utils.sh 'https://raw.githubuse
 RUN wget -O tesseract-3.04.00/training/tesstrain.sh 'https://raw.githubusercontent.com/tesseract-ocr/tesseract/master/training/tesstrain.sh'
 
 # Download and build lat.traineddata
-COPY latinocr-lattraining latinocr-lattraining/
 COPY latinocr-lat latinocr-lat/
-
-RUN mkdir -p mylangdata/lat
-RUN cp -v latinocr-lattraining/lat.unicharambigs mylangdata/lat/
-RUN cp -v latinocr-lattraining/training_text.txt mylangdata/lat/lat.training_text
-RUN cp -v latinocr-lattraining/lat.word.txt mylangdata/lat/lat.wordlist
-RUN cp -v latinocr-lattraining/lat.freq.txt mylangdata/lat/lat.training_text.unigram_freqs
-RUN cp -v latinocr-lat/lat.punc.txt mylangdata/lat/lat.punc
-RUN cp -v latinocr-lat/lat.config mylangdata/lat/
-RUN cat latinocr-lat/font_properties langdata/font_properties | sort -u > mylangdata/font_properties
-RUN cp -v langdata/lat/lat.numbers mylangdata/lat/lat.numbers
-RUN ls mylangdata/lat
-
-RUN cd latinocr-lat; make fonts
-RUN cd latinocr-lat; make Latin.xheights
-
-RUN cat latinocr-lat/Latin.xheights langdata/Latin.xheights | sort -u > mylangdata/Latin.xheights
-RUN cp -v latinocr-lat/Latin.xheights mylangdata/lat/lat.xheights
-
-RUN cp -v latinocr-lattraining/allchars.txt latinocr-lat/
-RUN cd latinocr-lat; make Latin.unicharset
-RUN cp -v latinocr-lat/Latin.unicharset mylangdata/
-RUN cp -v latinocr-lat/Latin.unicharset mylangdata/lat/lat.unicharset
-
-RUN text2image --list_available_fonts --fonts_dir latinocr-lat
-
-RUN cd tesseract-3.04.00; ./training/tesstrain.sh \
-  --lang lat \
-  --langdata_dir ../mylangdata \
-  --tessdata_dir /usr/local/share/tessdata \
-  --fontlist 'Wyld+Wyld Italic+Cardo+Cardo Bold+EB Garamond+EB Garamond Italic+GFS Bodoni+GFS Bodoni Bold+GFS Bodoni Bold Italic+GFS Bodoni Italic+GFS Didot+GFS Didot Bold+GFS Didot Bold Italic+GFS Didot Italic+IM FELL DW Pica PRO+IM FELL Double Pica PRO+IM FELL English PRO+IM FELL French Canon PRO+IM FELL Great Primer PRO+IM FELL DW Pica PRO Italic+IM FELL Double Pica PRO Italic+IM FELL English PRO Italic+IM FELL French Canon PRO Italic+IM FELL Great Primer PRO Italic' \
-  --exposures -3 -2 -1 0 1 2 3 \
-  --fonts_dir ../latinocr-lat
-
-RUN ls -sh /tmp/tesstrain/tessdata
-
-# Download and build lat.traineddata
-# COPY latinocr-lattraining latinocr-lattraining/
-# RUN cd latinocr-lattraining; make corpus
-# RUN cd latinocr-lattraining; make
-# COPY latinocr-lat latinocr-lat/
-# RUN cp -v latinocr-lattraining/training_text.txt latinocr-lattraining/lat.word.txt latinocr-lattraining/lat.freq.txt latinocr-lattraining/lat.unicharambigs latinocr-lat
-# 
-# RUN cd latinocr-lat; make features lat.normproto lat.unicharambigs
-# CMD cd latinocr-lat; make lat.traineddata
+RUN cd latinocr-lat; PATH="/home/tesseract-3.04.00/training:$PATH" make
