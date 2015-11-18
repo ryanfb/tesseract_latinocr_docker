@@ -60,4 +60,6 @@ RUN wget -O tesseract-3.04.00/training/tesstrain.sh 'https://raw.githubuserconte
 
 # Download and build lat.traineddata
 COPY latinocr-lat latinocr-lat/
-RUN cd latinocr-lat; PATH="/home/tesseract-3.04.00/training:$PATH" make
+ENV TESSDATA_PREFIX /usr/local/share/tessdata
+ENV PATH /home/tesseract-3.04.00/training:$PATH
+RUN cd latinocr-lat; make
