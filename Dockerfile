@@ -54,7 +54,7 @@ RUN cp osd.traineddata /usr/local/share/tessdata/
 
 # Download langdata and latest training tools
 RUN git clone https://github.com/tesseract-ocr/langdata.git
-RUN wget -O tesseract-3.04.00/training/language-specific.sh 'https://raw.githubusercontent.com/tesseract-ocr/tesseract/master/training/language-specific.sh'
+RUN wget -O tesseract-3.04.00/training/language-specific.sh 'https://raw.githubusercontent.com/ryanfb/tesseract/latin-language-specific/training/language-specific.sh'
 RUN wget -O tesseract-3.04.00/training/tesstrain_utils.sh 'https://raw.githubusercontent.com/tesseract-ocr/tesseract/master/training/tesstrain_utils.sh'
 RUN wget -O tesseract-3.04.00/training/tesstrain.sh 'https://raw.githubusercontent.com/tesseract-ocr/tesseract/master/training/tesstrain.sh'
 
@@ -62,4 +62,5 @@ RUN wget -O tesseract-3.04.00/training/tesstrain.sh 'https://raw.githubuserconte
 COPY latinocr-lat latinocr-lat/
 ENV TESSDATA_PREFIX /usr/local/share/tessdata
 ENV PATH /home/tesseract-3.04.00/training:$PATH
+RUN cd latinocr-lat; make tesstrain-prereqs
 RUN cd latinocr-lat; make
