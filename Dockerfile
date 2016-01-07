@@ -59,7 +59,9 @@ RUN wget -O tesseract-3.04.00/training/tesstrain_utils.sh 'https://raw.githubuse
 RUN wget -O tesseract-3.04.00/training/tesstrain.sh 'https://raw.githubusercontent.com/tesseract-ocr/tesseract/master/training/tesstrain.sh'
 
 # Download and build lat.traineddata
-COPY latinocr-lat latinocr-lat/
+# RUN git clone https://github.com/ryanfb/latinocr-lat.git && cd latinocr-lat && git checkout b6885bca0fa755fbed2bbb36d3f5cebf866a15e0 && git submodule update --init --recursive
+COPY . tesseract_latinocr_docker
+RUN git clone tesseract_latinocr_docker/latinocr-lat latinocr-lat && cd latinocr-lat && git checkout b6885bca0fa755fbed2bbb36d3f5cebf866a15e0 && git submodule update --init --recursive
 ENV TESSDATA_PREFIX /usr/local/share/tessdata
 ENV PATH /home/tesseract-3.04.00/training:$PATH
 RUN cd latinocr-lat; make tesstrain-prereqs
